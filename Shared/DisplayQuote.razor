@@ -1,0 +1,33 @@
+﻿@using Discovered.ViewModels;
+@foreach (var item in Discovered.Results)
+{
+    <div class="ps-4">
+        <h1 class="fs-1 fw-bold">@Head</h1>
+        <div class="col-xl-6">
+            <p class="fs-4 w-100 text-wrap ">@item.Text</p>
+        </div>
+
+        <div class="">
+            <a class="fs-5 text-decoration-none" style="color:rgb(53, 183, 255)" @onclick="OnClickHandler">@item.Context >>></a>
+
+        </div>
+    </div>
+        
+}
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public DiscoveredResults Discovered { get; set; }
+    [Parameter]
+    public string Head { get; set; }
+    [Parameter]
+    public EventCallback<VerseDTO> OnClickSripture { get; set; }
+
+    private async void OnClickHandler()
+    {
+        string _verse = Discovered.Results.FirstOrDefault().Context;
+        VerseDTO verseDTO = new(_verse, "kjv");
+        await OnClickSripture.InvokeAsync(verseDTO);
+    }
+}
